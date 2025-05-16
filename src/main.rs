@@ -1,6 +1,4 @@
-fn main() {
-    println!("Hello, Rust!");
-
+fn ini() {
     //string
     let word: &str = "this guy";
     println!("word: {}", word);
@@ -22,7 +20,7 @@ fn main() {
     println!("Full Name: {}", name);
 
     //variable
-    let mut a: &str ="Rust";
+    let mut a: &str = "Rust";
     println!("The value of a is: {}", a);
     a = "crab";
     println!("The value of a is now: {}", a);
@@ -54,16 +52,16 @@ fn main() {
     //while loop
     let mut number: i32 = 1;
     while number <= 10 {
-        println!("2 x {} = {}", number, 2*number);
+        println!("2 x {} = {}", number, 2 * number);
         number += 1;
     }
 
     let mut x: i32 = 0;
-    while x < 5 { 
-            println!("X is: {}", x);
-            x += 1;
+    while x < 5 {
+        println!("X is: {}", x);
+        x += 1;
     }
-    
+
     //using while loop with user input
     // use std::io;
     // let mut input = String::new();
@@ -75,7 +73,7 @@ fn main() {
     // }
     // println!("Program terminated");
 
-    //while loop with countdown 
+    //while loop with countdown
     let mut count: i32 = 10;
     while count >= 0 {
         println!("Countdown: {}", count);
@@ -99,9 +97,11 @@ fn main() {
     println!("Loop exited");
 
     //Using continue to skip an iteration
-    for number in 1..=10 { //loop through 1 to 10
-        if number % 2 == 0 { //check if number is even
-            continue;  //skip even numbers
+    for number in 1..=10 {
+        //loop through 1 to 10
+        if number % 2 == 0 {
+            //check if number is even
+            continue; //skip even numbers
         }
         println!("Odd number: {}", number);
     }
@@ -121,14 +121,14 @@ fn main() {
     // while true { //infinite loop
     //     println!("Current Count: {}", count);
     //     count += 1; //increment count by 1
-    
+
     //     if count >= 5 { //stop when the count reaches 5
     //         println!("Count reached 5, exiting loop");
     //         break;
     //         // count += 1; //increment count by 1
     //         println!("Loop exited. Final count {}", count);
     //     }
-        
+
     // }
 
     //for loop
@@ -136,4 +136,72 @@ fn main() {
     for fruit in fruits.iter() {
         println!("Fruit: {}", fruit);
     }
+
+    //Simple function
+    fn greet() {
+        println!("Hello, Rust!");
+    }
+    greet();
+
+    //create a function that finds out the average of several numbers and returns it
+    fn average(numbers: &[i32]) -> f64 {
+        let sum: i32 = numbers.iter().sum();
+        let count: usize = numbers.len();
+        sum as f64 / count as f64
+    }
+
+    let avg = average(&[1, 2, 3, 4, 5]);
+    println!("The average is: {}", avg);
+
+    //enums
+    enum Light {
+        Red,
+        Green,
+        Yellow,
+    }
+
+    fn action(light: Light) {
+        match light {
+            Light::Red => println!("Stop!"),
+            Light::Green => println!("Go!"),
+            Light::Yellow => println!("Caution!"),
+        }
+    }
+    action(Light::Red);
+    action(Light::Green);
+    action(Light::Yellow);
+}
+use std::fs::File;
+use std::io::{BufReader, BufRead};
+use std::env;
+fn main() {
+    ini();
+    // Reading a file
+    let file: Result<File, std::io::Error> = File::open("PrudentLife Letter.pdf");
+    let file = match file {
+        Ok(file) => file,
+        Err(error) => {
+            match error.kind() {
+                std::io::ErrorKind::NotFound => {
+                    panic!("File not found: {}", error);
+                }
+                _ => {
+                    panic!("An error occurred: {}", error);
+                }
+            }
+          
+        }
+    };
+
+    let reader = BufReader::new(file);
+    for line in reader.lines() {
+        match line {
+            Ok(content) => println!("{}", content),
+            Err(error) => panic!("Error reading line: {}", error),
+        }
+    }
+
+    let args: Vec<String> = env::args().collect();
+    println!("My path is {}", args[0]);
+
 }
